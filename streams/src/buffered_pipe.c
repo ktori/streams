@@ -36,28 +36,18 @@ stream_buffered_pipe_pass(stream_buffered_pipe_t pipe)
 			  pipe_copy.to, pipe_copy.buffer + pipe->buffer_write_at, pipe->buffer_read_at - pipe->buffer_write_at);
 
 			if (count == STREAM_IO_ERROR)
-			{
-				if (errno == EAGAIN)
-					return EXIT_FAILURE;
-
 				return PIPE_WRITE_ERROR;
-			} else
-			{
+			else
 				pipe->buffer_write_at += count;
-			}
 		} else
 		{
 			count = stream_read(pipe_copy.from, pipe_copy.buffer, pipe_copy.buffer_size);
 
 			if (count == STREAM_IO_ERROR)
-			{
-				if (errno == EAGAIN)
-					return EXIT_FAILURE;
-
 				return PIPE_READ_ERROR;
-			} else if (count == 0) {
+			else if (count == 0)
 				return EXIT_SUCCESS;
-			} else
+			else
 			{
 				pipe->buffer_read_at = count;
 				pipe->buffer_write_at = 0;
