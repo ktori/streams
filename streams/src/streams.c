@@ -37,8 +37,6 @@ stream_init(stream_t stream, struct stream_backend_s backend)
 int
 stream_destroy(stream_t stream)
 {
-	stream->backend.def.destroy(stream->backend.impl);
-
 	return EXIT_SUCCESS;
 }
 
