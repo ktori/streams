@@ -41,18 +41,16 @@ void
 basic_pipe_example()
 {
 	struct stream_buffered_pipe_s p;
-	struct stream_backend_s source_bk;
-	struct stream_backend_s sink_bk;
-	stream_t source;
-	stream_t sink;
+	struct stream_s source;
+	struct stream_s sink;
 
-	fd_backend(&source_bk, STDIN_FILENO, STREAMS_NO_FD, 0);
-	fd_backend(&sink_bk, STREAMS_NO_FD, STDOUT_FILENO, 0);
+	stream_init(&source);
+	stream_init(&sink);
 
-	source = stream_new(source_bk);
-	sink = stream_new(sink_bk);
+	fd_backend(&source.backend, STDIN_FILENO, STREAMS_NO_FD, 0);
+	fd_backend(&sink.backend, STREAMS_NO_FD, STDOUT_FILENO, 0);
 
-	stream_buffered_pipe_init(&p, source, sink, 16);
+	stream_buffered_pipe_init(&p, &source, &sink, 16);
 
 	switch (stream_buffered_pipe_pass(&p))
 	{
@@ -70,11 +68,10 @@ basic_pipe_example()
 	}
 
 	stream_buffered_pipe_destroy(&p);
-
-	stream_delete(sink);
-	stream_delete(source);
-	stream_backend_destroy(&sink_bk);
-	stream_backend_destroy(&source_bk);
+	stream_backend_destroy(&source.backend);
+	stream_backend_destroy(&sink.backend);
+	stream_destroy(&sink);
+	stream_destroy(&source);
 }
 
 int

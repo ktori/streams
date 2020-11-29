@@ -4,17 +4,15 @@
 
 #include "streams/streams.h"
 
-#include "stream.h"
-
 #include <errno.h>
 #include <stdlib.h>
 
 /** Allocate and init stream in heap */
 stream_t
-stream_new(struct stream_backend_s backend)
+stream_new()
 {
 	stream_t result = calloc(1, sizeof(*result));
-	stream_init(result, backend);
+	stream_init(result);
 
 	return result;
 }
@@ -29,9 +27,8 @@ stream_delete(stream_t stream)
 
 /** Init stream in-place */
 void
-stream_init(stream_t stream, struct stream_backend_s backend)
+stream_init(stream_t stream)
 {
-	stream->backend = backend;
 }
 
 /** Destroy stream (does not free()) */

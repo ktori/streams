@@ -7,7 +7,10 @@
 #include <stddef.h>
 #include <streams/stream_backend.h>
 
-typedef struct stream_s *stream_t;
+typedef struct stream_s
+{
+	struct stream_backend_s backend;
+} *stream_t;
 
 #define STREAM_IO_ERROR ((size_t)-1)
 
@@ -16,7 +19,7 @@ typedef struct stream_s *stream_t;
 
 /** Allocate and init stream in heap */
 stream_t
-stream_new(struct stream_backend_s backend);
+stream_new();
 
 /** Destroy and free stream */
 void
@@ -24,7 +27,7 @@ stream_delete(stream_t stream);
 
 /** Init stream in-place */
 void
-stream_init(stream_t stream, struct stream_backend_s backend);
+stream_init(stream_t stream);
 
 /** Destroy stream (does not free()) */
 int
