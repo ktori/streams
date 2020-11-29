@@ -9,13 +9,10 @@
 
 typedef struct stream_s *stream_t;
 
-/*
- * BaseStream: no callbacks
- * PullStream: read() calls producer
- * PushStream: write() calls consumer
- */
-
 #define STREAM_IO_ERROR ((size_t)-1)
+
+#define PIPE_READ_ERROR  -1
+#define PIPE_WRITE_ERROR -2
 
 /** Allocate and init stream in heap */
 stream_t

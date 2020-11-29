@@ -8,6 +8,7 @@
 #include <streams/backend/linear_fixed_buffer.h>
 #include <streams/backend/sink.h>
 #include <streams/backend/source.h>
+#include <streams/buffered_pipe.h>
 #include <streams/streams.h>
 #include <unistd.h>
 
@@ -57,14 +58,13 @@ fd_source(const int *fd, char *data, size_t size)
 void
 basic_pipe_example()
 {
+	struct stream_buffered_pipe_s p;
 	struct stream_backend_s source_bk;
 	struct stream_backend_s sink_bk;
-	char c = 0;
 	stream_t source;
 	stream_t sink;
-	int source_fd = 1;
-	int sink_fd = 0;
-	size_t ret;
+	int source_fd = STDIN_FILENO;
+	int sink_fd = STDOUT_FILENO;
 
 	source_backend(&source_bk, (source_callback_fn)fd_source, &source_fd);
 	sink_backend(&sink_bk, (sink_callback_fn)fd_sink, &sink_fd);
@@ -72,24 +72,23 @@ basic_pipe_example()
 	source = stream_new(source_bk);
 	sink = stream_new(sink_bk);
 
-	while (c != EOF)
-	{
-		ret = stream_read(source, &c, 1);
-		if (ret == STREAM_IO_ERROR)
-		{
-			perror("Source read error");
-			break;
-		}
+	stream_buffered_pipe_init(&p, source, sink, 16);
 
-		c = toupper(c);
-
-		ret = stream_write(sink, &c, 1);
-		if (ret == STREAM_IO_ERROR)
-		{
-			perror("Sink write error");
+	switch (stream_buffered_pipe_pass(&p)) {
+		case 0:
 			break;
-		}
+		case PIPE_READ_ERROR:
+			perror("Read error");
+			break;
+		case PIPE_WRITE_ERROR:
+			perror("Write error");
+			break;
+		default:
+			perror("Unknown error");
+			break;
 	}
+
+	stream_buffered_pipe_destroy(&p);
 
 	stream_delete(sink);
 	stream_delete(source);
