@@ -1,3 +1,3 @@
-target_sources(streams PUBLIC streams.h stream_backend.h)
+add_subdirectory(streams)
 
-add_subdirectory(backend)
+target_include_directories(streams PUBLIC .)

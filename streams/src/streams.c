@@ -2,12 +2,12 @@
  * Created by victoria on 11/29/20.
  */
 
-#include "streams.h"
+#include "streams/streams.h"
 
 #include "stream.h"
 
-#include <stdlib.h>
 #include <errno.h>
+#include <stdlib.h>
 
 /** Allocate and init stream in heap */
 stream_t
@@ -44,7 +44,8 @@ stream_destroy(stream_t stream)
 size_t
 stream_write(stream_t stream, const char *data, size_t size)
 {
-	if (!stream->backend.def.write) {
+	if (!stream->backend.def.write)
+	{
 		/* Stream does not support writing */
 		errno = EINVAL;
 

@@ -2,14 +2,14 @@
  * Created by victoria on 11/29/20.
  */
 
-#include <backend/sink.h>
-
 #include <stdlib.h>
+#include <streams/backend/sink.h>
 
-typedef struct sink_backend_s {
+typedef struct sink_backend_s
+{
 	void *self;
 	sink_callback_fn callback;
-} *sink_backend_t;
+} * sink_backend_t;
 
 size_t
 sink_backend_write(sink_backend_t backend, const char *data, size_t size)

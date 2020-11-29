@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include <stream_backend.h>
+#include <streams/stream_backend.h>
 
-typedef size_t(*source_callback_fn)(void *self, char *out, size_t size);
+typedef size_t (*source_callback_fn)(void *self, char *out, size_t size);
 
 int
 source_backend(stream_backend_t backend, source_callback_fn callback, void *self);

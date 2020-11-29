@@ -4,9 +4,8 @@
 
 #pragma once
 
-#include <stream_backend.h>
-
 #include <stddef.h>
+#include <streams/stream_backend.h>
 
 typedef struct stream_s *stream_t;
 

@@ -2,13 +2,13 @@
  * Created by victoria on 11/29/20.
  */
 
-#include <backend/linear_fixed_buffer.h>
-#include <backend/sink.h>
-#include <backend/source.h>
 #include <ctype.h>
 #include <errno.h>
 #include <stdio.h>
-#include <streams.h>
+#include <streams/backend/linear_fixed_buffer.h>
+#include <streams/backend/sink.h>
+#include <streams/backend/source.h>
+#include <streams/streams.h>
 #include <unistd.h>
 
 const char SOME_DATA[] = "Some data";

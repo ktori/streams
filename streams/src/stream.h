@@ -4,10 +4,9 @@
 
 #pragma once
 
-#include <stream_backend.h>
-
-#include <stdint.h>
 #include <stddef.h>
+#include <stdint.h>
+#include <streams/stream_backend.h>
 
 struct stream_s
 {

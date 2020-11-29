@@ -23,7 +23,7 @@ typedef struct stream_backend_s
 {
 	void *impl;
 	struct stream_backend_def_s def;
-} *stream_backend_t;
+} * stream_backend_t;
 
 void
 stream_backend_destroy(stream_backend_t backend);

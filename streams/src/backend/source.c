@@ -2,14 +2,14 @@
  * Created by victoria on 11/29/20.
  */
 
-#include <backend/source.h>
-
 #include <stdlib.h>
+#include <streams/backend/source.h>
 
-typedef struct source_backend_s {
+typedef struct source_backend_s
+{
 	void *self;
 	source_callback_fn callback;
-} *source_backend_t;
+} * source_backend_t;
 
 size_t
 source_backend_read(source_backend_t backend, char *data, size_t size)

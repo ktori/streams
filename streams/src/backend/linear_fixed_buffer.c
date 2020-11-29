@@ -2,10 +2,10 @@
  * Created by victoria on 11/29/20.
  */
 
-#include <backend/linear_fixed_buffer.h>
 #include <errno.h>
 #include <memory.h>
 #include <stdlib.h>
+#include <streams/backend/linear_fixed_buffer.h>
 
 #define LFB_ASSERTS
 
