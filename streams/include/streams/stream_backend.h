@@ -26,4 +26,11 @@ typedef struct stream_backend_s
 } * stream_backend_t;
 
 void
+stream_backend_init(stream_backend_t backend,
+					void *self,
+					stream_backend_read_fn read,
+					stream_backend_write_fn write,
+					stream_backend_destroy_fn destroy);
+
+void
 stream_backend_destroy(stream_backend_t backend);

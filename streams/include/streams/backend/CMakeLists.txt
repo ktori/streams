@@ -1,1 +1,1 @@
-target_sources(streams PUBLIC linear_fixed_buffer.h source.h sink.h)
+target_sources(streams PUBLIC linear_fixed_buffer.h)
