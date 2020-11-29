@@ -5,6 +5,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include <streams/backend/linear_fixed_buffer.h>
+#include <streams/backend/fd.h>
 #include <streams/buffered_pipe.h>
 #include <streams/streams.h>
 #include <unistd.h>
@@ -36,18 +37,6 @@ az_sequence_source(struct az_sequence_source_s *source, char *out, size_t size)
 	return emitted;
 }
 
-size_t
-fd_sink(const int *fd, const char *data, size_t size)
-{
-	return write(*fd, data, size);
-}
-
-size_t
-fd_source(const int *fd, char *data, size_t size)
-{
-	return read(*fd, data, size);
-}
-
 void
 basic_pipe_example()
 {
@@ -56,11 +45,9 @@ basic_pipe_example()
 	struct stream_backend_s sink_bk;
 	stream_t source;
 	stream_t sink;
-	int source_fd = STDIN_FILENO;
-	int sink_fd = STDOUT_FILENO;
 
-	stream_backend_init(&source_bk, &source_fd, (stream_backend_read_fn)fd_source, NULL, NULL);
-	stream_backend_init(&sink_bk, &sink_fd, NULL, (stream_backend_write_fn)fd_sink, NULL);
+	fd_backend(&source_bk, STDIN_FILENO, STREAMS_NO_FD, 0);
+	fd_backend(&sink_bk, STREAMS_NO_FD, STDOUT_FILENO, 0);
 
 	source = stream_new(source_bk);
 	sink = stream_new(sink_bk);

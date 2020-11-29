@@ -1,1 +1,1 @@
-target_sources(streams PRIVATE linear_fixed_buffer.c)
+target_sources(streams PRIVATE linear_fixed_buffer.c fd.c)
