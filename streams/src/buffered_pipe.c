@@ -2,7 +2,6 @@
  * Created by victoria on 11/29/20.
  */
 
-#include <errno.h>
 #include <stdlib.h>
 #include <streams/buffered_pipe.h>
 
@@ -37,6 +36,8 @@ stream_buffered_pipe_pass(stream_buffered_pipe_t pipe)
 
 			if (count == STREAM_IO_ERROR)
 				return PIPE_WRITE_ERROR;
+			else if (count == 0)
+				return EXIT_SUCCESS;
 			else
 				pipe->buffer_write_at += count;
 		} else
