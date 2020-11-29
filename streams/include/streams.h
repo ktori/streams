@@ -35,7 +35,7 @@ int
 stream_destroy(stream_t stream);
 
 size_t
-stream_write(stream_t stream, const void *data, size_t size);
+stream_write(stream_t stream, const char *data, size_t size);
 
 size_t
-stream_read(stream_t stream, void *data, size_t size);
+stream_read(stream_t stream, char *data, size_t size);

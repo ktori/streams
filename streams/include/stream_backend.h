@@ -8,8 +8,8 @@
 
 #define STREAM_BACKEND_IO_ERROR ((size_t)-1)
 
-typedef size_t (*stream_backend_read_fn)(void *self, void *data, size_t size);
-typedef size_t (*stream_backend_write_fn)(void *self, const void *data, size_t size);
+typedef size_t (*stream_backend_read_fn)(void *self, char *data, size_t size);
+typedef size_t (*stream_backend_write_fn)(void *self, const char *data, size_t size);
 typedef void (*stream_backend_destroy_fn)(void *self);
 
 struct stream_backend_def_s

@@ -13,38 +13,13 @@
 #include <assert.h>
 #endif
 
-struct stream_backend_def_s linear_fixed_buffer_backend_def = {
-	(stream_backend_read_fn)linear_fixed_buffer_backend_read,
-	(stream_backend_write_fn)linear_fixed_buffer_backend_write,
-	(stream_backend_destroy_fn)linear_fixed_buffer_backend_destroy
-};
-
-int
-linear_fixed_buffer_backend(struct stream_backend_s *backend, size_t size)
+typedef struct linear_fixed_buffer_backend_s
 {
-	linear_fixed_buffer_backend_t impl = calloc(1, sizeof(*impl));
-
-	if (impl == NULL)
-		return EXIT_FAILURE;
-
-	impl->buffer = calloc(size, 1);
-
-	if (impl->buffer == NULL)
-	{
-		free(impl);
-
-		return EXIT_FAILURE;
-	}
-
-	impl->size = size;
-	impl->read_ptr = 0;
-	impl->write_ptr = 0;
-
-	backend->def = linear_fixed_buffer_backend_def;
-	backend->impl = impl;
-
-	return EXIT_SUCCESS;
-}
+	char *buffer;
+	size_t size;
+	size_t read_ptr;
+	size_t write_ptr;
+} * linear_fixed_buffer_backend_t;
 
 void
 linear_fixed_buffer_backend_destroy(linear_fixed_buffer_backend_t backend)
@@ -55,7 +30,7 @@ linear_fixed_buffer_backend_destroy(linear_fixed_buffer_backend_t backend)
 }
 
 size_t
-linear_fixed_buffer_backend_read(linear_fixed_buffer_backend_t backend, void *data, size_t size)
+linear_fixed_buffer_backend_read(linear_fixed_buffer_backend_t backend, char *data, size_t size)
 {
 #ifdef LFB_ASSERTS
 	assert(backend->read_ptr <= backend->write_ptr);
@@ -90,7 +65,7 @@ linear_fixed_buffer_backend_read(linear_fixed_buffer_backend_t backend, void *da
 }
 
 size_t
-linear_fixed_buffer_backend_write(linear_fixed_buffer_backend_t backend, const void *data, size_t size)
+linear_fixed_buffer_backend_write(linear_fixed_buffer_backend_t backend, const char *data, size_t size)
 {
 #ifdef LFB_ASSERTS
 	assert(backend->write_ptr <= backend->size);
@@ -113,4 +88,33 @@ linear_fixed_buffer_backend_write(linear_fixed_buffer_backend_t backend, const v
 	backend->write_ptr += size;
 
 	return size;
+}
+
+int
+linear_fixed_buffer_backend(struct stream_backend_s *backend, size_t size)
+{
+	linear_fixed_buffer_backend_t impl = calloc(1, sizeof(*impl));
+
+	if (impl == NULL)
+		return EXIT_FAILURE;
+
+	impl->buffer = calloc(size, 1);
+
+	if (impl->buffer == NULL)
+	{
+		free(impl);
+
+		return EXIT_FAILURE;
+	}
+
+	impl->size = size;
+	impl->read_ptr = 0;
+	impl->write_ptr = 0;
+
+	backend->def.read = (stream_backend_read_fn)linear_fixed_buffer_backend_read;
+	backend->def.write = (stream_backend_write_fn)linear_fixed_buffer_backend_write;
+	backend->def.destroy = (stream_backend_destroy_fn)linear_fixed_buffer_backend_destroy;
+	backend->impl = impl;
+
+	return EXIT_SUCCESS;
 }

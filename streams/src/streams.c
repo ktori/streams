@@ -7,6 +7,7 @@
 #include "stream.h"
 
 #include <stdlib.h>
+#include <errno.h>
 
 /** Allocate and init stream in heap */
 stream_t
@@ -41,13 +42,28 @@ stream_destroy(stream_t stream)
 }
 
 size_t
-stream_write(stream_t stream, const void *data, size_t size)
+stream_write(stream_t stream, const char *data, size_t size)
 {
+	if (!stream->backend.def.write) {
+		/* Stream does not support writing */
+		errno = EINVAL;
+
+		return STREAM_IO_ERROR;
+	}
+
 	return stream->backend.def.write(stream->backend.impl, data, size);
 }
 
 size_t
-stream_read(stream_t stream, void *data, size_t size)
+stream_read(stream_t stream, char *data, size_t size)
 {
+	if (!stream->backend.def.read)
+	{
+		/* Stream does not support reading */
+		errno = EINVAL;
+
+		return STREAM_IO_ERROR;
+	}
+
 	return stream->backend.def.read(stream->backend.impl, data, size);
 }
