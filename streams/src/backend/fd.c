@@ -39,6 +39,8 @@ fd_backend_destroy(fd_backend_data_t self)
 		close(self->write_fd);
 		self->write_fd = -1;
 	}
+
+	free(self);
 }
 
 int
